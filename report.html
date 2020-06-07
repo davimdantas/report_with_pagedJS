@@ -1,0 +1,1234 @@
+<html>
+    <head>
+        <link
+            href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+            rel="stylesheet"
+        />
+        <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
+        <script>
+            class RepeatingTableHeaders extends Paged.Handler {
+                constructor(chunker, polisher, caller) {
+                    super(chunker, polisher, caller);
+                }
+
+                afterPageLayout(pageElement, page, breakToken, chunker) {
+                    // Find all split table elements
+                    let tables = pageElement.querySelectorAll(
+                        "table[data-split-from]"
+                    );
+
+                    tables.forEach((table) => {
+                        // Get the reference UUID of the node
+                        let ref = table.dataset.ref;
+                        if (ref === table.dataset["split-from"]) {
+                            // skip itself to avoid duplicate headers
+                            return;
+                        }
+                        // Find the node in the original source
+                        let sourceTable = chunker.source.querySelector(
+                            "[data-ref='" + ref + "']"
+                        );
+                        // Find if there is a header
+                        let header = sourceTable.querySelector("thead");
+                        if (header) {
+                            // Clone the header element
+                            let clonedHeader = header.cloneNode(true);
+                            // Insert the header at the start of the split table
+                            table.insertBefore(clonedHeader, table.firstChild);
+                        }
+                    });
+                }
+            }
+            Paged.registerHandlers(RepeatingTableHeaders);
+        </script>
+
+        <style>
+            @page {
+                size: 200mm 200mm;
+                margin: 0;
+            }
+
+            body,
+            .header {
+                font-family: Times-Bold;
+                font-size: 10px;
+            }
+
+            .footer {
+                font-family: Times-Bold;
+                font-size: 8px;
+            }
+
+            .header img {
+                width: 100%;
+                height: 10mm;
+                margin-bottom: 20px;
+            }
+            .header .line {
+                margin-bottom: 3px;
+            }
+
+            .section {
+                margin-bottom: 30px;
+            }
+
+            .flex-justify-space-between {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .flex-justify-center {
+                display: flex;
+                justify-content: center;
+            }
+            .flex-justify-space-around {
+                display: flex;
+                justify-content: space-around;
+            }
+
+            .sub-info,
+            table {
+                font-size: 11px;
+            }
+
+            .table-container {
+                margin: 0;
+            }
+
+            td span,
+            text-bold {
+                font-weight: 600;
+            }
+
+            .textHeader {
+                color: #fff;
+                font-size: 12px;
+                background-color: #38678c;
+                padding: 3px;
+                font-family: Times-Bold;
+                margin-bottom: 5px;
+            }
+
+            .col-3 > div {
+                flex: 33.33%;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="page">
+            <div class="text-lg">
+                A/C BRASIL
+            </div>
+            <div class="mb-5 text-lg">
+                Proposta nº 4 - Pedido de Venda nº 1650 - 04/06/2020
+            </div>
+            <div class="section">
+                <div class="textHeader">
+                    1. Dados do Cliente
+                </div>
+
+                <div class="table-container">
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span>Razão Social</span>: DAVI E. DANTAS ME
+                                </td>
+                                <td>
+                                    <span>CPF/CNPJ</span>: 05.785.451/0003-38
+                                </td>
+                                <td>
+                                    <span>Inscrição Estadual</span>:
+                                    000000054630
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <span>Nome Fantasia</span>: DAVI E. BORDIN
+                                    ME
+                                </td>
+                                <td><span>Endereço</span>: AV BEIRA RIO</td>
+                                <td><span>Cidade</span>: NATAL/RO</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="section">
+                <div class="textHeader">
+                    2. Dados dos Itens
+                </div>
+
+                <div class="table-container">
+                    <table
+                        width="100%"
+                        class="table-auto tabela-items-orcamento"
+                    >
+                        <thead>
+                            <tr>
+                                <th class="border px-4 py-2">DESCRIÇÃO</th>
+                                <th class="border px-4 py-2">NCM</th>
+                                <th class="border px-4 py-2">FINAME</th>
+                                <th class="border px-4 py-2">Vl Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="items-orcamento">
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 0</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    0
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 1</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    1.1
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 2</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    2.2
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 3</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    3.3000000000000003
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 4</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    4.4
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 5</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    5.5
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 6</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    6.6000000000000005
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 7</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    7.700000000000001
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 8</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    8.8
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 9</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    9.9
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 10</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    11
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 11</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    12.100000000000001
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 12</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    13.200000000000001
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 13</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    14.3
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 14</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    15.400000000000002
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 15</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    16.5
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 16</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    17.6
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 17</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    18.700000000000003
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 18</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    19.8
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 19</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    20.900000000000002
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 20</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    22
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 21</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    23.1
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 22</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    24.200000000000003
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 23</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    25.3
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 24</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    26.400000000000002
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 25</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    27.500000000000004
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 26</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    28.6
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 27</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    29.700000000000003
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 28</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    30.800000000000004
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 29</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    31.900000000000002
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 30</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    33
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 31</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    34.1
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 32</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    35.2
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 33</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    36.300000000000004
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 34</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    37.400000000000006
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 35</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    38.5
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 36</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    39.6
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 37</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    40.7
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 38</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    41.800000000000004
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 39</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    42.900000000000006
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 40</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    44
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 41</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    45.1
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 42</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    46.2
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 43</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    47.300000000000004
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 44</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    48.400000000000006
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 45</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    49.50000000000001
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 46</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    50.6
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 47</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    51.7
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 48</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    52.800000000000004
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 49</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    53.900000000000006
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 50</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    55.00000000000001
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 51</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    56.1
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 52</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    57.2
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 53</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    58.300000000000004
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 54</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    59.400000000000006
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 55</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    60.50000000000001
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 56</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    61.60000000000001
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 57</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    62.7
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 58</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    63.800000000000004
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 59</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    64.9
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 60</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    66
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 61</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    67.10000000000001
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 62</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    68.2
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 63</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    69.30000000000001
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 64</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    70.4
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 65</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    71.5
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 66</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    72.60000000000001
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 67</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    73.7
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 68</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    74.80000000000001
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 69</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    75.9
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 70</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    77
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 71</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    78.10000000000001
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 72</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    79.2
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 73</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    80.30000000000001
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 74</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    81.4
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 75</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    82.5
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 76</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    83.60000000000001
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 77</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    84.7
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 78</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    85.80000000000001
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 79</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    86.9
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 80</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    88
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 81</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    89.10000000000001
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 82</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    90.2
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 83</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    91.30000000000001
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 84</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    92.4
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 85</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    93.50000000000001
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 86</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    94.60000000000001
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 87</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    95.7
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 88</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    96.80000000000001
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 89</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    97.9
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 90</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    99.00000000000001
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 91</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    100.10000000000001
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 92</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    101.2
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 93</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    102.30000000000001
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 94</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    103.4
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 95</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    104.50000000000001
+                                </td>
+                            </tr>
+                            <tr class="bg-gray-100">
+                                <td class="border px-4 py-2">ITEM 96</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    105.60000000000001
+                                </td>
+                            </tr>
+                            <tr class=" ">
+                                <td class="border px-4 py-2">ITEM 97</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td class="border px-4 py-2">- DUVIDA -</td>
+                                <td
+                                    class="border px-4 py-2 text-right valor-final-item"
+                                >
+                                    106.7
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td
+                                    colspan="3"
+                                    class="font-semibold border px-4 py-2 text-left"
+                                >
+                                    TOTAL GERAL
+                                </td>
+                                <td
+                                    class="border px-4 py-2 text-right soma_pagina"
+                                ></td>
+                                <!-- <td class="border px-4 py-2 text-right soma_pagina" > 0 </td> -->
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <input type="text" id="teste" />
+                </div>
+
+                <hr />
+            </div>
+            <div class="section">
+                <div class="textHeader">
+                    3. Dados para NFE / Faturamento
+                </div>
+
+                <div class="table-container">
+                    <table width="100%">
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <span>Razão Social</span>: ENTREGAS MAQUINAS
+                                    E IMPLEMENTOS AGRICOLAS LTDA - ME
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td><span>CNPJ</span>: 05.074.069/0001-83</td>
+                                <td>
+                                    <span class="text-bold"
+                                        >Inscrição Estadual:</span
+                                    >
+                                    132089130
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <span class="text-bold">CEP:</span>
+                                    78455-000
+                                </td>
+
+                                <td>
+                                    <span class="text-bold">FONE:</span> (84)
+                                    3212-4900
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="flex flex justify-around mt-16">
+                <div class="text-right" style="text-decoration-line: overline;">
+                    <span class="text-bold" style="white-space: pre-wrap;">
+                        DAVI E. BORDIN ME
+                    </span>
+                </div>
+
+                <div class="text-right" style="text-decoration-line: overline;">
+                    <span class="text-bold" style="white-space: pre-wrap;">
+                        ENTREGAS MAQUINAS E IMPLEMENTOS AGRICOLAS LTDA - ME
+                    </span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
